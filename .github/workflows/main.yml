@@ -1,3 +1,4 @@
+
 name: Build NexiaVPN.exe
 
 on:
@@ -21,19 +22,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install PySide6 pyinstaller requests
 
-      - name: Build EXE
-        working-directory: nexiavpn
+      - name: Find main.py and build
         run: |
+          dir /s main.py
+          cd nexiavpn
           pyinstaller --name NexiaVPN --onefile --windowed --add-data "assets;assets" --hidden-import PySide6.QtCore --hidden-import PySide6.QtGui --hidden-import PySide6.QtWidgets --collect-all PySide6 --noconfirm main.py
+        shell: cmd
 
-      - name: Prepare dist
-        shell: pwsh
-        working-directory: nexiavpn
+      - name: Package
         run: |
-          New-Item -ItemType Directory -Force -Path dist\bin
-          New-Item -ItemType Directory -Force -Path dist\config
-          New-Item -ItemType Directory -Force -Path dist\logs
-          Compress-Archive -Path dist\* -DestinationPath ..\NexiaVPN-windows-x64.zip
+          mkdir nexiavpn\dist\bin
+          mkdir nexiavpn\dist\config
+          mkdir nexiavpn\dist\logs
+          Compress-Archive -Path nexiavpn\dist\* -DestinationPath NexiaVPN-windows-x64.zip
+        shell: pwsh
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
