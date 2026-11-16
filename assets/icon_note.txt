@@ -1,0 +1,1 @@
+Run create_icon.py after installing PySide6 to generate icon.png and icon.ico
