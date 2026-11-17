@@ -20,9 +20,16 @@ from utils.logger import get_logger
 
 logger = get_logger()
 
-XRAY_EXE = os.path.join("bin", "xray.exe")
-CONFIG_PATH = os.path.join("config", "xray_config.json")
+def _get_app_dir():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    else:
+        return os.path.dirname(os.path.abspath(__file__ + "/.."))
 
+import sys
+_APP_DIR = _get_app_dir()
+XRAY_EXE = os.path.join(_APP_DIR, "bin", "xray.exe")
+CONFIG_PATH = os.path.join(_APP_DIR, "config", "xray_config.json")
 
 class ConnectionState(Enum):
     DISCONNECTED = "disconnected"
