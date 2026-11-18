@@ -5,7 +5,10 @@ import sys
 import os
 
 # Ensure we're running from the correct directory
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+if getattr(sys, 'frozen', False):
+    os.chdir(os.path.dirname(sys.executable))
+else:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
